@@ -21,6 +21,7 @@ public class MyController extends HttpServlet {
 
     AuthenticateService authenticator;
     ItemService itemService;
+    HttpSession session;
 
     @Override
     public void init() throws ServletException {
@@ -38,12 +39,15 @@ public class MyController extends HttpServlet {
         String responseUrl="login.jsp";
         boolean help=Boolean.parseBoolean(request.getParameter("help"));
         responseUrl=help?"help.jsp":"login.jsp";
+        if(!help){
+        }
         RequestDispatcher requestDispatcher=request.getRequestDispatcher(responseUrl);
         requestDispatcher.forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        session=request.getSession();
         String responseUrl="login.jsp";
         String pageName=request.getParameter("page");
         System.out.println(pageName);
@@ -60,7 +64,6 @@ public class MyController extends HttpServlet {
                 }
             }
         }else if(pageName.equalsIgnoreCase("items.jsp")){
-            HttpSession session=request.getSession();
             responseUrl="items.jsp";
             String button=request.getParameter("action");
             List<String> checkBoxValues=null;
@@ -77,6 +80,14 @@ public class MyController extends HttpServlet {
             request.setAttribute("itemsList",itemService.getItems());
             session.setAttribute("itemsQuantity",quantities);
             session.setAttribute("checkedItems",checkBoxValues);
+        }else if(pageName.equalsIgnoreCase("checkout.jsp")){
+                String button=request.getParameter("action");
+                if(button.equalsIgnoreCase("back to cart")){
+                    responseUrl="items.jsp";
+                    request.setAttribute("itemsList",itemService.getItems());
+                }else if(button.equalsIgnoreCase("checkout")){
+                    responseUrl="thankyou.jsp";
+                }
         }
         RequestDispatcher requestDispatcher=request.getRequestDispatcher(responseUrl);
         requestDispatcher.forward(request,response);

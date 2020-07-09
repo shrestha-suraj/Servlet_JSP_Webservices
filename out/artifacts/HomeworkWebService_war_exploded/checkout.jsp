@@ -1,5 +1,6 @@
 <%@ page import="com.homework.domain.Item" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.text.DecimalFormat" %><%--
   Created by IntelliJ IDEA.
   User: suraj
   Date: 7/8/20
@@ -18,31 +19,53 @@
     <a href="?logout=true">Logout</a>
 </div>
 <form method="POST" action="/HomeworkWebService_war_exploded/home">
-    <input type="hidden" name="page" value="items.jsp">
+    <input type="hidden" name="page" value="checkout.jsp">
     <table class="items-table">
+        <tr  style="width: 100%">
+            <th colspan="4">Cart Summery</th>
+        </tr>
         <tr>
-            <th>Cart Summery</th>
+            <th>Item Name</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Sale Price</th>
         </tr>
         <%
-            List<Item> itemList=(List<Item>) request.getAttribute("itemList");
-            List<String> checkedBoxes=(List<String>) session.getAttribute("checkedBoxes");
-            List<String> quantities=(List<String>) session.getAttribute("quantities");
-            for(Item eachItem:itemList){
-                String id=eachItem.getId()+"";
-                boolean checked=checkedBoxes!=null?checkedBoxes.contains(id):false;
+            List<Item> items=(List<Item>) request.getAttribute("itemsList");
+            List<String> quantity=null;
+            List<String> checkedItems=null;
+            DecimalFormat df=new DecimalFormat("#.##");
+            double sum=0.0;
+            try{
+                quantity=(List<String>) session.getAttribute("itemsQuantity");
+                checkedItems=(List<String>) session.getAttribute("checkedItems");
+            }catch (Exception e){quantity=null;checkedItems=null;}
+            int index=0;
+            for(Item eachItem:items){
+                int itemId=eachItem.getId();
+                boolean inCart=quantity!=null && Integer.parseInt(quantity.get(index))>0 && checkedItems!=null & checkedItems.contains(itemId+"");
+                if(inCart){
+                    double salePrice=Integer.parseInt(quantity.get(index))*eachItem.getPrice();
+                    sum+=salePrice;
         %>
 
         <tr>
-            <td><input type="checkbox" name="items-checkbox" value="<%=eachItem.getId()%>" <%=checked?"checked":""%>></td>
             <td><%=eachItem.getName()%></td>
             <td>$ <%=eachItem.getPrice()%></td>
-            <td><input type="number" name="items-quantities" value=<%=checked?quantities.get(Integer.parseInt(id)-1):"0"%>></td>
+            <td><%=quantity.get(index)%></td>
+            <td>$ <%=df.format(salePrice)%></td>
         </tr>
 
-        <%}%>
+        <%}
+            index++;
+            }%>
+        <tr>
+            <td colspan="3">Total</td>
+            <td>$ <%=df.format(sum)%></td>
+        </tr>
     </table>
     <div class="button-class">
-        <input type="submit" value="Add To Cart" name="action">
+        <input type="submit" value="Back To Cart" name="action">
         <input type="submit" value="Checkout" name="action">
     </div>
 </form>

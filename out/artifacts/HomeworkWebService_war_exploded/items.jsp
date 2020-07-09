@@ -50,10 +50,15 @@
                 }%>
         </table>
         <div class="button-class">
-            <input type="submit" value="Add To Cart" name="action">
+            <input type="submit" value="Add To Cart" name="action" id="addToCart">
             <input type="submit" value="Checkout" name="action">
         </div>
     </form>
+    <script>
+        document.querySelector("#addToCart").addEventListener("click",(event)=>{
+            alert("Items added to cart successfully.");
+        })
+    </script>
 
 </body>
 </html>
