@@ -6,4 +6,12 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>MyController</servlet-name>
+        <servlet-class>com.homework.controller.MyController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MyController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
 </web-app>

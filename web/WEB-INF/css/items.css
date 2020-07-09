@@ -1,0 +1,36 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header-div{
+    display: inline-block;
+    position: absolute;
+    right: 50px;
+    top:10px;
+}
+.header-div a{
+    margin:20px;
+}
+table,th,td{
+    border:1px solid black;
+}
+th,td{
+    padding: 10px 20px;
+}
+.button-class{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    justify-content: space-evenly;
+}
+input[type="submit"]{
+    background: green;
+    border-radius: 10px;
+    color:white;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+input[type="submit"]:hover{
+    background:darkseagreen;
+}

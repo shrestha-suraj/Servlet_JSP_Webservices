@@ -12,7 +12,8 @@
     <style><%@include file="/WEB-INF/css/login.css"%></style>
 </head>
 <body>
-    <form method="POST" action="/home">
+
+    <form method="POST" action="/HomeworkWebService_war_exploded/home">
         <div>
             <label for="username">Username: </label>
             <input type="text" name="username">
@@ -20,7 +21,14 @@
 
         <label for="password">Password: </label>
         <input type="password" name="password">
-        <input type="submit" name="form_button" value="login">
+        <%
+            String errorMessage=(String) request.getAttribute("errorMessage");
+            if(errorMessage!=null){
+        %>
+        <span style="color:red;"><%=request.getAttribute("errorMessage")%></span>
+
+        <%}%>
+        <input type="submit" name="action" value="login">
         <input type="reset" value="reset">
         <input type="hidden" name="page" value="login.jsp">
     </form>
